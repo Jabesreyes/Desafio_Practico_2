@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.app {
+    width: 350px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.img-fondo{
+    height: 400px;
+}
+
+.title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 35px;
+    color: #63717C;
+}
+
+@media (max-width:380px){
+    .title{
+        font-size: 25px;
+    }
+}
+@media (max-width:321px){
+    .app{
+        width: 250px;
+    }
+}
