@@ -29,3 +29,49 @@
         width: 250px;
     }
 }
+
+/* Estilos para el formulario de transacción */
+.formulario {
+    float: none;
+    width: 50%;
+    padding: 25px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.transa {
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    margin-bottom: 26px;
+    margin-top: 24px;
+}
+
+.transa .circle {
+    width: 35px;
+    height: 35px;
+    background-color: #eeeeee;
+    color: #b4b4b4;
+    text-align: center;
+    border-radius: 50%;
+    line-height: 27px;
+    margin-right: 15px;
+}
+
+.form-group {
+    margin-bottom: 25px; 
+}
+
+.btn-primary {
+    width: 40%;
+    background-color: #151d4d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+}
