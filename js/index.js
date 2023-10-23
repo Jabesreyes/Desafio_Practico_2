@@ -1,85 +1,88 @@
 function calculateTitle() {
-    const date = new Date();
-    const month = date.toLocaleString('es-ES', { month: 'long' });
-    const year = date.getFullYear();
-    return `Presupuesto de 
+  const date = new Date();
+  const month = date.toLocaleString("es-ES", { month: "long" });
+  const year = date.getFullYear();
+  return `Presupuesto de 
     ${month} ${year}`;
 }
 
-document.getElementById('title').innerText = calculateTitle();
+document.getElementById("title").innerText = calculateTitle();
 
 // array para almacenar las transacciones
-const transactions = [];
+const transactionsIngreso = [];
+const transactionsEgreso = [];
+
+const sumaTotalIngresos = () => {
+  return transactionsIngreso.reduce((acumulador, ingreso) => {
+    return acumulador + ingreso.monto;
+  }, 0);
+};
 
 // Función para agregar una transacción
-function addTransaction(type, description, amount) {
-  transactions.push({ type, description, amount });
-  updateTransactionsList();
+function addTransactionIngreso(tipo, descripcion, monto) {
+  transactionsIngreso.push({ tipo, descripcion, monto });
 }
 
-// Función para actualizar la lista de transacciones en el HTML
-function updateTransactionsList() {
-  const transactionList = document.getElementById('transactionList');
-  transactionList.innerHTML = '';
-
-  transactions.forEach((transaction) => {
-    const listItem = document.createElement('li');
-    listItem.className = transaction.type === 'Ingreso' ? 'ingreso' : 'egreso';
-    const sign = transaction.type === 'Ingreso' ? '+' : '-';
-    listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">${sign}${transaction.amount}</span>`;
-    transactionList.appendChild(listItem);
-  });
+// Función para agregar una transacción
+function addTransactionEgreso(tipo, descripcion, monto) {
+  transactionsEgreso.push({ tipo, descripcion, monto });
 }
-
-// Función para mostrar solo Ingresos
-function showIngresos() {
-  const transactionList = document.getElementById('transactionList');
-  transactionList.innerHTML = '';
-
-  transactions
-    .filter((transaction) => transaction.type === 'Ingreso')
-    .forEach((transaction) => {
-      const listItem = document.createElement('li');
-      listItem.className = 'ingreso';
-      listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">+${transaction.amount}</span>`;
-      transactionList.appendChild(listItem);
-    });
-}
-
-// Función para mostrar solo Egresos
-function showEgresos() {
-  const transactionList = document.getElementById('transactionList');
-  transactionList.innerHTML = '';
-
-  transactions
-    .filter((transaction) => transaction.type === 'Egreso')
-    .forEach((transaction) => {
-      const listItem = document.createElement('li');
-      listItem.className = 'egreso';
-      listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">-${transaction.amount}</span>`;
-      transactionList.appendChild(listItem);
-    });
-}
-
 
 // Manejo del formulario de transacciones
-const transactionForm = document.querySelector('form');
-transactionForm.addEventListener('submit', function (event) {
+const transactionForm = document.querySelector("form");
+transactionForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const transactionType = transactionForm.querySelector('select').value;
-  const transactionDescription = transactionForm.querySelector('input[placeholder="Descripción"]').value;
-  const transactionAmount = parseFloat(transactionForm.querySelector('input[placeholder="Monto"]').value);
+  const transactionType = transactionForm.querySelector("select").value;
+  const transactionDescription = transactionForm.querySelector(
+    'input[placeholder="Descripción"]'
+  ).value;
+  const transactionAmount = parseFloat(
+    transactionForm.querySelector('input[placeholder="Monto"]').value
+  );
+  if (transactionType === "") {
+    alert("Debes seleccionar un tipo de tramite.");
+  } else if (transactionType === "Ingreso") {
+    addTransactionIngreso(
+      transactionType,
+      transactionDescription,
+      transactionAmount
+    );
+    
 
-  if (transactionType && transactionDescription && !isNaN(transactionAmount)) {
-    addTransaction(transactionType, transactionDescription, transactionAmount);
-    transactionForm.querySelector('select').value = "";
-    transactionForm.querySelector('input[placeholder="Descripción"]').value = "";
-    transactionForm.querySelector('input[placeholder="Monto"]').value = "";
+  saldo.textContent = sumaTotalIngresos();
+    alert("Se agrego un nuevo ingreso.");
+  } else {
+    addTransactionEgreso(
+      transactionType,
+      transactionDescription,
+      transactionAmount
+    );
+    alert("Se agrego un nuevo egreso");
   }
 });
 
-// Botones para filtrar las transacciones
-document.getElementById('btnEgreso').addEventListener('click', showEgresos);
-document.getElementById('btnIngreso').addEventListener('click', showIngresos);
+/* CODIGO DE CARLOS NO BORRAR */
 
+btnEgreso.addEventListener("click", (e) => {
+  e.preventDefault();
+  boxEgresos.innerHTML = "";
+  boxIngresos.innerHTML = "";
+  transactionsEgreso.forEach((obj) => {
+    const formula = (obj.monto * 100 / sumaTotalIngresos()).toFixed(2);
+    boxEgresos.innerHTML += `
+      <div class="egresoD">${obj.descripcion} - $${obj.monto} - (${formula}%)</div>
+      `;
+  });
+});
+
+btnIngreso.addEventListener("click", (e) => {
+  e.preventDefault();
+  boxIngresos.innerHTML = "";
+  boxEgresos.innerHTML = "";
+  transactionsIngreso.forEach((obj) => {
+    boxIngresos.innerHTML += `
+      <div class="egresoD">${obj.descripcion} - $${obj.monto} </div>
+      `;
+  });
+});
