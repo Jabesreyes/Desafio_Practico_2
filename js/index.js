@@ -29,6 +29,57 @@ function updateTransactionsList() {
     listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">${sign}${transaction.amount}</span>`;
     transactionList.appendChild(listItem);
   });
+  const totalMesElement = document.getElementById('totalMes');
+  totalMesElement.innerText = calculateTotalMes();
+  updatePorcentajeGastos();
+  updateTotalIngresosEgresos();
+}
+
+function calculateTotalMes() {
+  const totalIngresos = transactions
+      .filter(transaction => transaction.type === 'Ingreso')
+      .reduce((total, transaction) => total + transaction.amount, 0);
+
+  const totalEgresos = transactions
+      .filter(transaction => transaction.type === 'Egreso')
+      .reduce((total, transaction) => total + transaction.amount, 0);
+
+  const totalMes = totalIngresos - totalEgresos;
+
+  return totalMes.toFixed(2);
+}
+
+function updatePorcentajeGastos() {
+  const totalEgresos = transactions
+      .filter(transaction => transaction.type === 'Egreso')
+      .reduce((total, transaction) => total + transaction.amount, 0);
+
+  const totalIngresos = transactions
+      .filter(transaction => transaction.type === 'Ingreso')
+      .reduce((total, transaction) => total + transaction.amount, 0);
+
+  const porcentajeGastos = (totalEgresos * 100 / totalIngresos).toFixed(2);
+
+  const porcentajeElement = document.querySelector('.porcentaje button');
+  porcentajeElement.innerText = `${porcentajeGastos}%`;
+}
+
+function updateTotalIngresosEgresos() {
+  const totalIngresos = transactions
+    .filter((transaction) => transaction.type === 'Ingreso')
+    .reduce((total, transaction) => total + transaction.amount, 0)
+    .toFixed(2);
+
+  const totalEgresos = transactions
+    .filter((transaction) => transaction.type === 'Egreso')
+    .reduce((total, transaction) => total + transaction.amount, 0)
+    .toFixed(2);
+
+  const ingresosElement = document.getElementById('ingresoss');
+  const egresosElement = document.getElementById('egresoss');
+
+  ingresosElement.innerText = '$' + totalIngresos;
+  egresosElement.innerText = '$' + totalEgresos;
 }
 
 // Función para mostrar solo Ingresos
