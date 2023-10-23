@@ -78,38 +78,3 @@
 }
 
 
-/* codigo de carlos */
-
-.egreso_ingreso {
-    width: 50%;
-    padding: 25px;
-}
-
-.egreso_ingreso h2 {
-    margin-top: 1.5rem;
-    font-size: 20px;
-    color: #252525;
-    font-weight: 500;
-}
-
-.menu_botones {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.menu_botones button {
-    padding: .3rem 1rem;
-    color: #252525;
-    text-align: center;
-    border: 1px solid #252525;
-    border-radius: 5px;
-    display: block;
-    margin-right: 1rem;
-}
-
-.egresoD {
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
-}
-
