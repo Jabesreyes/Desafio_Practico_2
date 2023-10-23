@@ -73,24 +73,66 @@
     border: none;
     border-radius: 8px;
     padding: 8px;
-    font-size: 15px;
+    font-size: 12px;
     cursor: pointer;
     text-align: center;
 }
 
+/* codigo css de CARLOS NO ELIMINAR */
+
+.contenedor_padre {
+    display: flex;
+    justify-content: space-between;
+}
+
+.boxTransacciones {
+    padding: 25px;
+    width: 50%;
+}
+
+.menu_botones {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.boxTransacciones button {
+    padding: .7rem 1.5rem;
+    border: 1px solid #252525;
+    color: #252525;
+    background: #ffffff;
+    transition: background .6s ease;
+}
+
+.boxTransacciones button:hover {
+    background: #252525;
+    color: #fff
+}
+
+.egresoD {
+    padding: 1rem;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+}
+
+/* fin codigo de carlos */
+
+
 @media (max-width: 600px) {
-    .formulario {
-        width: 50%;
+    .contenedor_padre {
+        display: block;
+    }
+    .boxTransacciones {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .formulario, .menu_botones {
+        width: 100%;
     }
 
     .transa {
         font-size: 26px;
-    }
-}
-
-@media (max-width: 400px) {
-    .formulario {
-        width: 60%;
     }
 }
 
