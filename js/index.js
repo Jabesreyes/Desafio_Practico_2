@@ -101,13 +101,17 @@ transactions
 function showEgresos() {
 const transactionList = document.getElementById('transactionList');
 transactionList.innerHTML = '';
-
+const total = transactions
+  .filter((transaction) => transaction.type === 'Ingreso')
+  .reduce((total, transaction) => total + transaction.amount, 0)
+  .toFixed(2);
 transactions
   .filter((transaction) => transaction.type === 'Egreso')
   .forEach((transaction) => {
+    const formula = (transaction.amount * 100 / total).toFixed(2);
     const listItem = document.createElement('li');
     listItem.className = 'egreso';
-    listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">-${transaction.amount}</span>`;
+    listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount"> - $${transaction.amount}</span> -  <span class="porcent">(${formula}%)</span>`;
     transactionList.appendChild(listItem);
   });
 }
@@ -133,3 +137,4 @@ if (transactionType && transactionDescription && !isNaN(transactionAmount)) {
 // Botones para filtrar las transacciones
 document.getElementById('btnEgreso').addEventListener('click', showEgresos);
 document.getElementById('btnIngreso').addEventListener('click', showIngresos);
+
