@@ -9,6 +9,7 @@
 }
 .img-fondo{
     height: 400px;
+    background-color: #EDF0F5;
 }
 
 .title {
@@ -16,7 +17,7 @@
     text-transform: uppercase;
     font-weight: bold;
     font-size: 35px;
-    color: #63717C;
+    color: #38424B;
 }
 
 @media (max-width:380px){
