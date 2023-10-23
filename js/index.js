@@ -8,47 +8,78 @@ function calculateTitle() {
 
 document.getElementById('title').innerText = calculateTitle();
 
-document.addEventListener('DOMContentLoaded', function () {
-    const transactions = [];
+// array para almacenar las transacciones
+const transactions = [];
 
-    function updateResults() {
-        // Función para calcular resultados y actualizar la interfaz
-        const totalIncomes = transactions
-            .filter(transaction => transaction.type === 'Ingreso')
-            .reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+// Función para agregar una transacción
+function addTransaction(type, description, amount) {
+  transactions.push({ type, description, amount });
+  updateTransactionsList();
+}
 
-        const totalExpenses = transactions
-            .filter(transaction => transaction.type === 'Egreso')
-            .reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+// Función para actualizar la lista de transacciones en el HTML
+function updateTransactionsList() {
+  const transactionList = document.getElementById('transactionList');
+  transactionList.innerHTML = '';
 
-        const totalBudget = totalIncomes - totalExpenses;
-        const expensePercentage = (totalExpenses * 100) / totalIncomes; 
+  transactions.forEach((transaction) => {
+    const listItem = document.createElement('li');
+    listItem.className = transaction.type === 'Ingreso' ? 'ingreso' : 'egreso';
+    const sign = transaction.type === 'Ingreso' ? '+' : '-';
+    listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">${sign}${transaction.amount}</span>`;
+    transactionList.appendChild(listItem);
+  });
+}
 
-        document.getElementById('totalIncomes').textContent = totalIncomes.toFixed(2);
-        document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
-        document.getElementById('totalBudget').textContent = totalBudget.toFixed(2);
-        document.getElementById('expensePercentage').textContent = expensePercentage.toFixed(2) + '%';
-    }
+// Función para mostrar solo Ingresos
+function showIngresos() {
+  const transactionList = document.getElementById('transactionList');
+  transactionList.innerHTML = '';
 
-    document.getElementById('addTransaction').addEventListener('click', function () {
-        const type = document.getElementById('transactionType').value;
-        const description = document.getElementById('description').value;
-        const amount = document.getElementById('amount').value;
-
-        if (type && description && amount) {
-            transactions.push({ type, description, amount });
-            updateResults();
-            // Limpiar los campos después de agregar una transacción
-            document.getElementById('transactionType').value = 'Ingreso';
-            document.getElementById('description').value = '';
-            document.getElementById('amount').value = '';
-        }
+  transactions
+    .filter((transaction) => transaction.type === 'Ingreso')
+    .forEach((transaction) => {
+      const listItem = document.createElement('li');
+      listItem.className = 'ingreso';
+      listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">+${transaction.amount}</span>`;
+      transactionList.appendChild(listItem);
     });
+}
 
-    // Actualizar el título de la aplicación con la fecha
-    const date = new Date();
-    const month = date.toLocaleString('es-ES', { month: 'long' });
-    const year = date.getFullYear();
-    const title = `Presupuesto de ${month} ${year}`;
-    document.getElementById('title').textContent = title;
+// Función para mostrar solo Egresos
+function showEgresos() {
+  const transactionList = document.getElementById('transactionList');
+  transactionList.innerHTML = '';
+
+  transactions
+    .filter((transaction) => transaction.type === 'Egreso')
+    .forEach((transaction) => {
+      const listItem = document.createElement('li');
+      listItem.className = 'egreso';
+      listItem.innerHTML = `<span class="descripcion">${transaction.description}</span> <span class="amount">-${transaction.amount}</span>`;
+      transactionList.appendChild(listItem);
+    });
+}
+
+
+// Manejo del formulario de transacciones
+const transactionForm = document.querySelector('form');
+transactionForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const transactionType = transactionForm.querySelector('select').value;
+  const transactionDescription = transactionForm.querySelector('input[placeholder="Descripción"]').value;
+  const transactionAmount = parseFloat(transactionForm.querySelector('input[placeholder="Monto"]').value);
+
+  if (transactionType && transactionDescription && !isNaN(transactionAmount)) {
+    addTransaction(transactionType, transactionDescription, transactionAmount);
+    transactionForm.querySelector('select').value = "";
+    transactionForm.querySelector('input[placeholder="Descripción"]').value = "";
+    transactionForm.querySelector('input[placeholder="Monto"]').value = "";
+  }
 });
+
+// Botones para filtrar las transacciones
+document.getElementById('btnEgreso').addEventListener('click', showEgresos);
+document.getElementById('btnIngreso').addEventListener('click', showIngresos);
+
